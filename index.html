@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Entrega Taller 1</title>
   <script src="https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js"></script>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -88,13 +88,13 @@
 
   <div class="inputs">
     <label for="nombre">Nombre:</label>
-    <input type="text" id="nombre" placeholder="Escriba su nombre">
+    <input type="text" id="nombre" placeholder="Escriba su nombre" />
 
     <label for="carne">Carné:</label>
-    <input type="text" id="carne" placeholder="Escriba su número de carné">
+    <input type="text" id="carne" placeholder="Escriba su número de carné" />
 
     <label for="codigo">Código (Python):</label>
-    <textarea id="codigo" rows="5" placeholder='print("Hola mundo")'></textarea>
+    <textarea id="codigo" rows="6" placeholder='print("Hola mundo")'></textarea>
 
     <button onclick="mostrarDatos()">Ejecutar código</button>
   </div>
@@ -105,22 +105,16 @@
 
   <div id="datosEstudiante" class="info"></div>
 
-  <div>
-    <h3>Código ingresado:</h3>
-    <div class="code-block" id="codigoMostrado">
-      <!-- Código se muestra aquí -->
-    </div>
+  <h3>Código ingresado:</h3>
+  <div class="code-block"><code id="codigoMostrado"></code></div>
 
-    <h3>Resultado real (usando Python):</h3>
-    <div class="output-block" id="salida">
-      <!-- Resultado real -->
-    </div>
-  </div>
+  <h3>Resultado (ejecutado con Python):</h3>
+  <div class="output-block" id="salida"></div>
 
   <button class="print-btn" onclick="window.print()">Imprimir como PDF</button>
 
   <script>
-    // Fecha y hora actual
+    // Mostrar fecha y hora actual
     const fecha = new Date();
     const formato = fecha.toLocaleString('es-CR', {
       dateStyle: 'full',
@@ -128,20 +122,16 @@
     });
     document.getElementById('fechaHora').textContent = formato;
 
-    // Inicializar Pyodide
-    let pyodideReady = false;
-    let pyodide;
-
-    async function loadPyodideEnv() {
+    // Cargar Pyodide
+    let pyodide = null;
+    async function initPyodide() {
       pyodide = await loadPyodide();
-      pyodideReady = true;
     }
-
-    loadPyodideEnv();
+    initPyodide();
 
     async function mostrarDatos() {
-      if (!pyodideReady) {
-        alert("Python aún se está cargando. Espera un momento.");
+      if (!pyodide) {
+        alert("Python aún se está cargando. Intenta de nuevo en unos segundos.");
         return;
       }
 
@@ -157,7 +147,7 @@
       document.getElementById('codigoMostrado').textContent = codigo;
 
       try {
-        let output = await pyodide.runPythonAsync(`
+        const output = await pyodide.runPythonAsync(`
 import sys
 import io
 sys.stdout = io.StringIO()
@@ -165,9 +155,7 @@ sys.stderr = io.StringIO()
 
 ${codigo}
 
-stdout_output = sys.stdout.getvalue()
-stderr_output = sys.stderr.getvalue()
-stdout_output + stderr_output
+sys.stdout.getvalue() + sys.stderr.getvalue()
         `);
 
         document.getElementById('salida').textContent = output || "[Sin salida]";
