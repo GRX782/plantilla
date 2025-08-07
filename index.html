@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Entrega Taller 1</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background-color: #f9f9f9;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    header h1, header h2, header h3, header h4 {
+      margin: 5px;
+    }
+    .info {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 1rem;
+    }
+    .code-block {
+      background-color: #1e1e1e;
+      color: #dcdcdc;
+      padding: 20px;
+      border-radius: 8px;
+      font-family: 'Courier New', monospace;
+      white-space: pre-wrap;
+      overflow-x: auto;
+    }
+    .print-btn {
+      display: block;
+      margin: 30px auto;
+      padding: 10px 20px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    @media print {
+      .print-btn {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Instituto Tecnológico de Costa Rica</h1>
+    <h2>Curso Taller 1</h2>
+    <h3>Nombre: Juan Pérez</h3>
+    <h4>Carné: 2025012345</h4>
+  </header>
+
+  <div class="info">
+    <strong>Fecha y hora de visualización:</strong> <span id="fechaHora"></span>
+  </div>
+
+  <div class="code-block">
+<code>
+print("Esto es una prueba")
+</code>
+  </div>
+
+  <button class="print-btn" onclick="window.print()">Imprimir como PDF</button>
+
+  <script>
+    // Mostrar fecha y hora actual
+    const fecha = new Date();
+    const formato = fecha.toLocaleString('es-CR', {
+      dateStyle: 'full',
+      timeStyle: 'short'
+    });
+    document.getElementById('fechaHora').textContent = formato;
+  </script>
+
+</body>
+</html>
